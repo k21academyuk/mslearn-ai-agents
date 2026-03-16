@@ -1,10 +1,10 @@
 ---
 lab:
-    title: 'Develop an AI agent with VS Code extension'
+    title: 'Develop an AI agent with VS Code extension (deprecated)'
     description: 'Use the Microsoft Foundry VS Code extension to create an AI agent.'
 ---
 
-# Develop an AI agent with VS Code extension
+# Develop an AI agent with VS Code extension (deprecated)
 
 In this exercise, you'll use the Microsoft Foundry VS Code extension to create an agent that can use Model Context Protocol (MCP) server tools to access external data sources and APIs. The agent will be able to retrieve up-to-date information and interact with various services through MCP tools.
 
@@ -31,6 +31,8 @@ Let's start by installing and setting up the VS Code extension.
 1. Select the **Microsoft Foundry** extension from Microsoft and click **Install**.
 
 1. After installation is complete, verify the extension appears in the primary navigation bar on the left side of Visual Studio Code.
+
+> **Tip**: If you already have the extension installed, make sure the version is at least **v0.16.0** to follow along with the instructions in this exercise.
 
 ## Sign in to Azure and create a project
 
@@ -92,7 +94,9 @@ Now you'll create an AI agent using the visual designer interface. Rather than w
 
 1. In the Microsoft Foundry extension view, find the **Resources** section.
 
-1. Select the **+** (plus) icon next to the **Declarative Agents** subsection to create a new AI Agent.
+1. Expand the **Classic** subsection.
+
+1. Select the **+** (plus) icon next to the **Classic Agents** subsection to create a new AI Agent.
 
     ![Screenshot of an creating an agent in the Microsoft Foundry VS Code extension.](Media/vs-code-new-agent.png)
 
@@ -136,11 +140,11 @@ You'll now add a Model Context Protocol (MCP) server tool that allows your agent
 
 1. Wait for the deployment to complete.
 
-1. In the VS Code navbar, refresh the **Resources** view. Your deployed agent should now appear under the **Declarative Agents** subsection.
+1. In the VS Code navbar, refresh the **Resources** view. Your deployed agent should now appear under the **Classic Agents** subsection.
 
 ## Test your agent in the playground
 
-1. Right-click on your deployed agent in the **Declarative Agents** subsection.
+1. Right-click on your deployed agent in the **Classic Agents** subsection.
 
 1. Select **Open Playground** from the context menu.
 

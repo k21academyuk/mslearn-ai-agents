@@ -1,10 +1,10 @@
 ---
 lab:
-    title: 'Develop an AI agent'
+    title: 'Develop an AI agent (deprecated)'
     description: 'Use the Azure AI Agent Service to develop an agent that uses built-in tools.'
 ---
 
-# Develop an AI agent
+# Develop an AI agent (deprecated)
 
 In this exercise, you'll use Azure AI Agent Service to create a simple agent that analyzes data and creates charts. The agent can use the built-in *Code Interpreter* tool to dynamically generate any code required to analyze data.
 
@@ -94,7 +94,7 @@ Now you're ready to create a client app that uses an agent. Some code has been p
     ```
    python -m venv labenv
    ./labenv/bin/Activate.ps1
-   pip install -r requirements.txt azure-ai-agents
+   pip install -r requirements.txt
     ```
 
 1. Enter the following command to edit the configuration file that has been provided:
@@ -220,15 +220,15 @@ Now you're ready to create a client app that uses an agent. Some code has been p
 1. Find the comment **Get the conversation history**, which is after the loop ends, and add the following code to print out the messages from the conversation thread; reversing the order to show them in chronological sequence
 
     ```python
-   # Get the conversation history
-   print("\nConversation Log:\n")
-       items = openai_client.conversations.items.list(conversation_id=conversation.id)
-       for item in items:
-           if item.type == "message":
-               print(f"item.content[0].type = {item.content[0].type}")
-               role = item.role.upper()
-               content = item.content[0].text
-               print(f"{role}: {content}\n")
+    # Get the conversation history
+    print("\nConversation Log:\n")
+    items = openai_client.conversations.items.list(conversation_id=conversation.id)
+    for item in items:
+        if item.type == "message":
+            print(f"item.content[0].type = {item.content[0].type}")
+            role = item.role.upper()
+            content = item.content[0].text
+            print(f"{role}: {content}\n")
     ```
 
 1. Find the comment **Clean up** and add the following code to delete the agent and thread when no longer needed.
@@ -238,7 +238,7 @@ Now you're ready to create a client app that uses an agent. Some code has been p
    openai_client.conversations.delete(conversation_id=conversation.id)
    print("Conversation deleted")
 
-   project_client.agents.delete(agent_name=agent.name, agent_version=agent.version)
+   project_client.agents.delete_version(agent_name=agent.name, agent_version=agent.version)
    print("Agent deleted")
     ```
 

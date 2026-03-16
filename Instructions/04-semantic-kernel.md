@@ -1,10 +1,10 @@
 ---
 lab:
-    title: 'Develop an Azure AI agent with the Microsoft Agent Framework SDK'
+    title: 'Develop an Azure AI agent with the Microsoft Agent Framework SDK (deprecated)'
     description: 'Learn how to use the Microsoft Agent Framework SDK to create and use an Azure AI chat agent.'
 ---
 
-# Develop an Azure AI chat agent with the Microsoft Agent Framework SDK
+# Develop an Azure AI chat agent with the Microsoft Agent Framework SDK (deprecated)
 
 In this exercise, you'll use Azure AI Agent Service and Microsoft Agent Framework to create an AI agent that processes expense claims.
 
@@ -14,31 +14,39 @@ This exercise should take approximately **30** minutes to complete.
 
 ## Deploy a model in a Microsoft Foundry project
 
-Let's start by deploying a model in a Foundry project.
+
+Let's start by creating a Foundry project.
 
 1. In a web browser, open the [Foundry portal](https://ai.azure.com) at `https://ai.azure.com` and sign in using your Azure credentials. Close any tips or quick start panes that are opened the first time you sign in, and if necessary use the **Foundry** logo at the top left to navigate to the home page, which looks similar to the following image (close the **Help** pane if it's open):
 
-    ![Screenshot of Foundry portal.](./Media/ai-foundry-home.png)
+    ![Screenshot of Foundry portal.](./Media/ai-foundry-home-new.png)
 
-    > **Important**: Make sure the **New Foundry** toggle is *Off* for this lab.
-
-1. On the home page, in the **Explore models and capabilities** section, search for the `gpt-4o` model; which we'll use in our project.
-1. In the search results, select the **gpt-4o** model to see its details, and then at the top of the page for the model, select **Use this model**.
-1. When prompted to create a project, enter a valid name for your project and expand **Advanced options**.
-1. Confirm the following settings for your project:
+    > **Important**: For this lab, you're using the **New** Foundry experience.
+1. In the top banner, select **Start building** to try the new Microsoft Foundry Experience.
+1. When prompted, create a **new** project, and enter a valid name for your project.
+1. Expand **Advanced options** and specify the following settings:
     - **Foundry resource**: *A valid name for your Foundry resource*
     - **Subscription**: *Your Azure subscription*
-    - **Resource group**: *Create or select a resource group*
-    - **Region**: *Select any **AI Foundry recommended***\*
+    - **Resource group**: *Select your resource group, or create a new one*
+    - **Region**: *Select any **AI Foundry recommended***\**
 
     > \* Some Azure AI resources are constrained by regional model quotas. In the event of a quota limit being exceeded later in the exercise, there's a possibility you may need to create another resource in a different region.
 
-1. Select **Create** and wait for your project, including the gpt-4 model deployment you selected, to be created.
-1. When your project is created, the chat playground will be opened automatically.
-1. In the **Setup** pane, note the name of your model deployment; which should be **gpt-4o**. You can confirm this by viewing the deployment in the **Models and endpoints** page (just open that page in the navigation pane on the left).
-1. In the navigation pane on the left, select **Overview** to see the main page for your project; which looks like this:
+1. Select **Create** and wait for your project to be created.
 
-    ![Screenshot of a Azure AI project details in Foundry portal.](./Media/ai-foundry-project.png)
+1. After your project is created, select **Build** from the navigation bar.
+
+1. Select **Models** from the left-hand menu, and then select **Deploy a base model**.
+
+1. Enter **gpt-4.1** in the search box, and then select the **gpt-4.1** model from the search results.
+
+1. Select **Deploy** with the default settings to create a deployment of the model.
+
+    After the model is deployed, the playground for the model is displayed.
+
+1. In the navigation bar on the left, select **Microsoft Foundry** to return to the Foundry home page.
+
+1. Copy the **Project endpoint** value to a notepad, as you'll use them to connect to your project in a client application.
 
 ## Create an agent client app
 
@@ -85,7 +93,7 @@ Now you're ready to create a client app that defines an agent and a custom funct
     ```
    python -m venv labenv
    ./labenv/bin/Activate.ps1
-   pip install azure-identity agent-framework
+   pip install agent-framework==1.0.0b260212 opentelemetry-semantic-conventions-ai==0.4.13 --pre
     ```
 
 1. Enter the following command to edit the configuration file that has been provided:
@@ -96,7 +104,8 @@ Now you're ready to create a client app that defines an agent and a custom funct
 
     The file is opened in a code editor.
 
-1. In the code file, replace the **your_project_endpoint** placeholder with the endpoint for your project (copied from the project **Overview** page in the Foundry portal), and the **your_model_deployment** placeholder with the name you assigned to your gpt-4o model deployment.
+1. In the code file, replace the **your_project_endpoint** placeholder with the endpoint for your project (copied from the project **Overview** page in the Foundry portal) and ensure that the AZURE_AI_MODEL_DEPLOYMENT_NAME variable is set to your model deployment name (which should be *gpt-4.1*).
+
 1. After you've replaced the placeholders, use the **CTRL+S** command to save your changes and then use the **CTRL+Q** command to close the code editor while keeping the cloud shell command line open.
 
 ### Write code for an agent app
@@ -118,8 +127,8 @@ Now you're ready to create a client app that defines an agent and a custom funct
 
     ```python
    # Add references
-   from agent_framework import AgentThread, ChatAgent
-   from agent_framework.azure import AzureAIAgentClient
+   from agent_framework import tool, Agent
+   from agent_framework.azure import AzureOpenAIResponsesClient
    from azure.identity.aio import AzureCliCredential
    from pydantic import Field
    from typing import Annotated
@@ -129,37 +138,41 @@ Now you're ready to create a client app that defines an agent and a custom funct
 
     ```python
    # Create a tool function for the email functionality
-   def send_email(
-    to: Annotated[str, Field(description="Who to send the email to")],
-    subject: Annotated[str, Field(description="The subject of the email.")],
-    body: Annotated[str, Field(description="The text body of the email.")]):
-        print("\nTo:", to)
-        print("Subject:", subject)
-        print(body, "\n")
+   @tool(approval_mode="never_require")
+   def submit_claim(
+   to: Annotated[str, Field(description="Who to send the email to")],
+   subject: Annotated[str, Field(description="The subject of the email.")],
+   body: Annotated[str, Field(description="The text body of the email.")]):
+       print("\nTo:", to)
+       print("Subject:", subject)
+       print(body, "\n")
     ```
 
     > **Note**: The function *simulates* sending an email by printing it to the console. In a real application, you'd use an SMTP service or similar to actually send the email!
 
-1. Back up above the **send_email** code, in the **process_expenses_data** function, find the comment **Create a chat agent**, and add the following code to create a  **ChatAgent** object with the tools and instructions.
+1. Back up above the **send_email** code, in the **process_expenses_data** function, find the comment **Create a client and initialize an agent with the tool and instructions**, and add the following code:
 
     (Be sure to maintain the indentation level)
 
     ```python
-   # Create a chat agent
+   # Create a client and initialize an agent with the tool and instructions
    async with (
-       AzureCliCredential() as credential,
-       ChatAgent(
-           chat_client=AzureAIAgentClient(credential=credential),
-           name="expenses_agent",
-           instructions="""You are an AI assistant for expense claim submission.
-                           When a user submits expenses data and requests an expense claim, use the plug-in function to send an email to expenses@contoso.com with the subject 'Expense Claim`and a body that contains itemized expenses with a total.
-                           Then confirm to the user that you've done so.""",
-           tools=send_email,
-       ) as agent,
-   ):
+        AzureCliCredential() as credential,
+        Agent(
+            client=AzureOpenAIResponsesClient(
+                credential=credential,
+                deployment_name=os.getenv("MODEL_DEPLOYMENT_NAME"),
+                project_endpoint=os.getenv("PROJECT_ENDPOINT"),
+            ),
+            instructions="""You are an AI assistant for expense claim submission.
+                        At the user's request, create an expense claim and use the plug-in function to send an email to expenses@contoso.com with the subject 'Expense Claim`and a body that contains itemized expenses with a total.
+                        Then confirm to the user that you've done so. Don't ask for any more information from the user, just use the data provided to create the email.""",
+            tools=[submit_claim],
+        ) as agent,
+    ):
     ```
 
-    Note that the **AzureCliCredential** object will allow your code to authenticate to your Azure account. The **AzureAIAgentClient** object will automatically include the Foundry project settings from the .env configuration.
+    Note that the **AzureCliCredential** object will allow your code to authenticate to your Azure account. The **AzureOpenAIResponsesClient** object includes the Foundry project settings from the .env configuration. The **Agent** object is initialized with the client, instructions for the agent, and the tool function you defined to send emails.
 
 1. Find the comment **Use the agent to process the expenses data**, and add the following code to create a thread for your agent to run on, and then invoke it with a chat message.
 

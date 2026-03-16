@@ -1,10 +1,10 @@
 ---
 lab:
-    title: 'Use a custom function in an AI agent'
+    title: 'Use a custom function in an AI agent (deprecated)'
     description: 'Learn how to use functions to add custom capabilities to your agents.'
 ---
 
-# Use a custom function in an AI agent
+# Use a custom function in an AI agent (deprecated)
 
 In this exercise you'll explore creating an agent that can use custom functions as a tool to complete tasks. You'll build a simple technical support agent that can collect details of a technical problem and generate a support ticket.
 
@@ -97,7 +97,7 @@ Now that you've created your project in AI Foundry, let's develop an app that im
     ```
    python -m venv labenv
    ./labenv/bin/Activate.ps1
-   pip install -r requirements.txt azure-ai-agents
+   pip install -r requirements.txt
     ```
 
     >**Note:** You can ignore any warning or error messages displayed during the library installation.
@@ -148,7 +148,7 @@ Now that you've created your project in AI Foundry, let's develop an app that im
        ticket_number = str(uuid.uuid4()).replace('-', '')[:6]
        file_name = f"ticket-{ticket_number}.txt"
        file_path = script_dir / file_name
-       text = f"Support ticket: {ticket_number}\nSubmitted by: {email_address}\nDescription:\n{description}"
+       text = f"Support ticket: {ticket_number}\nSubmitted by: {email_address}\nDescription: {description}"
        file_path.write_text(text)
 
        message_json = json.dumps({"message": f"Support ticket {ticket_number} submitted. The ticket file is saved as {file_name}"})
@@ -225,8 +225,8 @@ Now that you've created your project in AI Foundry, let's develop an app that im
 
     ```python
    # Create a thread for the chat session
-       conversation = openai_client.conversations.create()
-       print(f"Created conversation (id: {conversation.id})")
+   conversation = openai_client.conversations.create()
+   print(f"Created conversation (id: {conversation.id})")
     ```
 
 1. Find the comment **Send a prompt to the agent** and add the following code to add the user's prompt as a message.

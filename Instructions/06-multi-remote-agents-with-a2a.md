@@ -1,10 +1,10 @@
 ---
 lab:
-    title: 'Connect to remote agents with A2A protocol'
+    title: 'Connect to remote agents with A2A protocol (deprecated)'
     description: 'Use the A2A protocol to collaborate with remote agents.'
 ---
 
-# Connect to remote agents with A2A protocol
+# Connect to remote agents with A2A protocol (deprecated)
 
 In this exercise, you'll use Azure AI Agent Service with the A2A protocol to create simple remote agents that interact with one another. These agents will assist technical writers with preparing their developer blog posts. A title agent will generate a headline, and an outline agent will use the title to develop a concise outline for the article. Let's get started
 
@@ -20,32 +20,37 @@ Let's start by creating a Foundry project.
 
 1. In a web browser, open the [Foundry portal](https://ai.azure.com) at `https://ai.azure.com` and sign in using your Azure credentials. Close any tips or quick start panes that are opened the first time you sign in, and if necessary use the **Foundry** logo at the top left to navigate to the home page, which looks similar to the following image (close the **Help** pane if it's open):
 
-    ![Screenshot of Foundry portal.](./Media/ai-foundry-home.png)
+    ![Screenshot of Foundry portal.](./Media/ai-foundry-home-new.png)
 
-    > **Important**: Make sure the **New Foundry** toggle is *Off* for this lab.
+    > **Important**: For this lab, you're using the **New** Foundry experience.
 
-1. In the home page, select **Create an agent**.
-1. When prompted to create a project, enter a valid name for your project and expand **Advanced options**.
-1. Confirm the following settings for your project:
+1. In the top banner, select **Start building** to try the new Microsoft Foundry Experience.
+
+1. When prompted, select **Create a new project** and enter a valid name for your project.
+
+1. Expand **Advanced options** and specify the following settings:
     - **Foundry resource**: *A valid name for your Foundry resource*
     - **Subscription**: *Your Azure subscription*
-    - **Resource group**: *Create or select a resource group*
-    - **Region**: *Select any **AI Foundry recommended***\*
+    - **Resource group**: *Select your resource group, or create a new one*
+    - **Region**: *Select any **AI Foundry recommended***\**
 
     > \* Some Azure AI resources are constrained by regional model quotas. In the event of a quota limit being exceeded later in the exercise, there's a possibility you may need to create another resource in a different region.
 
 1. Select **Create** and wait for your project to be created.
-1. If prompted, deploy a **gpt-4o** model using either the *Global Standard* or *Standard* deployment option (depending on your quota availability).
 
-    >**Note**: If quota is available, a GPT-4o base model may be deployed automatically when creating your Agent and project.
+1. After your project is created, select **Build** from the navigation bar.
 
-1. When your project is created, the Agents playground will be opened.
+1. Select **Models** from the left-hand menu, and then select **Deploy a base model**.
 
-1. In the navigation pane on the left, select **Overview** to see the main page for your project; which looks like this:
+1. Enter **gpt-4.1** in the search box, and then select the **gpt-4.1** model from the search results.
 
-    ![Screenshot of a Foundry project overview page.](./Media/ai-foundry-project.png)
+1. Select **Deploy** with the default settings to create a deployment of the model.
 
-1. Copy the **Foundry project endpoint** values to a notepad, as you'll use them to connect to your project in a client application.
+    After the model is deployed, the playground for the model is displayed.
+
+1. In the navigation bar on the left, select **Microsoft Foundry** to return to the Foundry home page.
+
+1. Copy the **Project endpoint** value to a notepad, as you'll use them to connect to your project in a client application.
 
 ## Create an A2A application
 
@@ -101,7 +106,7 @@ Now you're ready to create a client app that uses an agent. Some code has been p
     └── run_all.py
     ```
 
-    Each agent folder contains the Azure AI agent code and a server to host the agent. The **routing agen**t is responsible for discovering and communicating with the **title** and **outline** agents. The **client** allows users to submit prompts to the routing agent. `run_all.py` launches all the servers and runs the client.
+    Each agent folder contains the Azure AI agent code and a server to host the agent. The **routing agent** is responsible for discovering and communicating with the **title** and **outline** agents. The **client** allows users to submit prompts to the routing agent. `run_all.py` launches all the servers and runs the client.
 
 ### Configure the application settings
 
@@ -110,7 +115,7 @@ Now you're ready to create a client app that uses an agent. Some code has been p
     ```
    python -m venv labenv
    ./labenv/bin/Activate.ps1
-   pip install -r requirements.txt azure-ai-projects azure-ai-agents a2a-sdk
+   pip install -r requirements.txt 
     ```
 
 1. Enter the following command to edit the configuration file that has been provided:
@@ -121,7 +126,7 @@ Now you're ready to create a client app that uses an agent. Some code has been p
 
     The file is opened in a code editor.
 
-1. In the code file, replace the **your_project_endpoint** placeholder with the endpoint for your project (copied from the project **Overview** page in the Foundry portal) and ensure that the MODEL_DEPLOYMENT_NAME variable is set to your model deployment name (which should be *gpt-4o*).
+1. In the code file, replace the **your_project_endpoint** placeholder with the endpoint for your project (copied from the project **Overview** page in the Foundry portal) and ensure that the MODEL_DEPLOYMENT_NAME variable is set to your model deployment name (which should be *gpt-4.1*).
 1. After you've replaced the placeholder, use the **CTRL+S** command to save your changes and then use the **CTRL+Q** command to close the code editor while keeping the cloud shell command line open.
 
 ### Create a discoverable agent
