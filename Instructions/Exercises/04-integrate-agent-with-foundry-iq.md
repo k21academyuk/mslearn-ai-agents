@@ -5,6 +5,7 @@ lab:
     level: 300
     duration: 45
     islab: true
+    status: 'released'
 ---
 
 # Integrate an AI agent with Foundry IQ
@@ -50,11 +51,10 @@ Let's start by creating a Foundry project with the new Foundry experience.
 
 ## Create an agent
 
-1. On the home page, under **Start building**, select **Create an agent**.
-1. Give your agent a name, such as `product-expert-agent`.
-1. Select **Create**.
+1. On the home page, select the **Build** tab, then on the **Agents** tab select **Create agent**.
+1. Create your agent with a descriptive name, such as `product-expert-agent`.
 
-When creating an agent, it will deploy the default model (like `gpt-4.1`). Once your agent is created, you'll see the agent playground with that default model automatically selected for you.
+When creating an agent, it will deploy the default model (like `gpt-5`). Once your agent is created, you'll see the agent playground with that default model automatically selected for you.
 
 ## Configure your data and Foundry IQ
 
@@ -63,62 +63,67 @@ Now you'll configure your agent that uses Foundry IQ to search the knowledge bas
 1. First, give your agent the following instructions:
 
     ```
-    You are a helpful AI assistant for Contoso, specializing in outdoor camping and hiking products. 
-    You must ALWAYS search the knowledge base to answer questions about our products or product 
-    catalog. Provide detailed, accurate information and always cite your sources.
-    If you don't find relevant information in the knowledge base, say so clearly.
+   You are a helpful AI assistant for Contoso, specializing in outdoor camping and hiking products. 
+   You must ALWAYS search the knowledge base to answer questions about our products or product 
+   catalog. Provide detailed, accurate information and always cite your sources.
+   If you don't find relevant information in the knowledge base, say so clearly.
     ```
 
 1. Select **Save** to save your current agent configuration.
 1. Then, in the **Knowledge** section, expand the **Add** dropdown, and select **Connect to Foundry IQ**.
-1. In the Foundry IQ setup window, select **Connect to an AI Search resource** and then **Create new resource** which should open up the Azure portal in a new tab.
-1. Create a search resource with the following settings:
+1. In the Foundry IQ setup window, select **Connect to an AI Search resource** and then **Create new resource** which should open up a dialog to create the resource.
+1. Create a search resource with the default settings:
+    - **Resource name**: *A globally unique name*
     - **Subscription**: *Your Azure subscription*
     - **Resource group**: *Use the same resource group as your project*
-    - **Service name**: *A globally unique name*
-    - **Location**: *The same location as your project*
-    - **Pricing tier**: *Free* if available, otherwise choose *Basic*
+    - **Region**: *The same location as your project*
+    - **Pricing tier**: Free *if available, otherwise choose Basic*
+    - **Foundry IQ Knowledge base capabilities**: Pause til next month
 
 Now you'll upload sample product information documents to connect to with Foundry IQ.
 
 1. Download the sample product information files by opening a new browser tab and navigating to `https://github.com/MicrosoftLearning/mslearn-ai-agents/raw/main/Labfiles/04-integrate-agent-with-foundry-iq/data/contoso-products.zip`
 1. Extract the files from the zip, which should be 3 PDFs detailing the products from Contoso.
-1. In the Azure Portal tab, in the top search bar, search fo **Storage accounts** and select **Storage accounts** from the services section.
+1. Open a new tab and navigate to the Azure portal at `https://portal.azure.com`. In the top search bar, search fo **Storage accounts** and select **Storage accounts** from the services section.
 1. Create a storage account with the following settings:
     - **Subscription**: *Your Azure subscription*
     - **Resource group**: *Use the same resource group as your project*
     - **Storage account name**: *A unique storage account name*
     - **Region**: *The same location as your project*
-    - **Preferred storage type**: *Azure Blob Storage or Azure Data Lake Storage Gen 2*
+    - **Primary service**: *Azure Blob Storage or Azure Data Lake Storage*
     - **Performance**: *Standard*
     - **Redundancy**: *Locally-redundant storage (LRS)*
 1. Once created, go to the storage account you created and select **Upload** from the top bar.
 1. In the **Upload blob** blade, create a new container named `contosoproducts`.
 1. Browse for the files extracted from the zip file, select all 3 PDF files, and select **Upload**.
 1. Once your files are uploaded, navigate to the search service you created.
-1. On the left pane, under **Settings** > **Keys**, select **Both** for API Access control and confirm the selection. Once complete, close the Azure Portal tab and navigate back to the Foundry IQ page in Microsoft Foundry and refresh the page.
-1. Select your search service and select **API key** for Auth Type, and click **Connect**.
-1. On the Foundry IQ page, select **Create a knowledge base**, choosing **Azure Blob Storage** as your knowledge source, then select **Connect**.
+1. On the left pane, under **Security + networking** > **Keys**, select **Both** for API Access control and confirm the selection. Once complete, leave the Azure Portal tab open and navigate back to the Foundry portal tab and refresh the page.
+1. Verify you are on the **Knowledge** page, select **Create a knowledge base**, choosing **Azure Blob Storage** as your knowledge source, then select **Connect**.
 1. Configure your knowledge source with the following settings:
     - **Name**: `ks-contosoproducts`
     - **Description**: `Contoso product catalog items`
     - **Storage account name**: *Select your storage account*
     - **Container name**: `contosoproducts`
-    - **Content extraction mode**: *minimal*
     - **Authentication type**: *API Key*
-    - **Include embedding model**: *Selected*
+    - **Content extraction mode**: *minimal*
     - **Embedding model**: *Select the available deployed model, likely text-embedding-3-small*
-    - **Chat completions model**: *Select the available deployed model, likely gpt-4.1*
+    - **Chat completions model**: *Select the available deployed model, likely gpt-5*
 1. Select **Create**.
-1. On the knowledge base creation page, select the `gpt-4.1` model from the **Chat completions model** dropdown, leaving the rest of the optional fields as is.
+1. On the knowledge base creation page, select the `gpt-5` model from the **Chat completions model** dropdown, leaving the rest of the field defaults as is.
 1. Select **Save knowledge base**, and then refresh your browser to verify the knowledge source status is *active*. If it isn't yet, wait a minute and refresh your page until it is.
-1. On the top right, expand the **Use in an agent** dropdown, and select your `product-expert-agent`.
+1. Select the back button to return to the **Knowledge** page, then select the **Manage** link next to the *Connection* drop-down.
+1. Scroll down to the **Connected resources**, where you should see your search service. Select that row, find the **Authentication** section.
+1. Select **Key authentication** and then select **Edit authentication**.
+1. Leaving the dialog open, return to the Azure portal tab which should still be on your search service **Keys** page. Copy one of those keys into the dialog in Foundry and select **Save**.
+
+Your Foundry IQ settings should now be complete.
 
 ## Test the Agent in the playground
 
 Before connecting from code, test your agent in the portal playground.
 
-1. In the agent page, you should see a playground tab selected and your knowledge base listed in the knowledge section.
+1. Navigate back to your agent on the **Build** > **Agents** page, and select the agent you created.
+2. In the agent page, you should see a playground tab selected. Find the knowledge section and add Foundry IQ, selecting the connection and knowledge base you created.
 1. Try the following test queries to verify the agent can retrieve information from the knowledge base:
     - `What types of tents does Contoso offer?`
     - `Tell me about which backpacks are available in XL.`
@@ -134,6 +139,29 @@ Before connecting from code, test your agent in the portal playground.
 1. In the agent details page, locate and copy the following information to a notepad (you'll need these later):
     - **Agent name**: This is the name you created (`product-expert-agent`)
     - **Project endpoint**: Found in the project settings or home page
+
+### Configure the agent to require approval for tool calls
+
+When you create an agent in the portal, its Foundry IQ (knowledge) tool runs **without** asking for approval by default. To ensure your app can review and control each knowledge base lookup, you'll change the agent to require approval before it uses tools with the Foundry Toolkit for VS Code extension.
+
+> **Note**: The Foundry portal doesn't currently expose a setting to change this approval behavior, so you'll configure it from the Foundry Toolkit extension instead.
+
+1. In Visual Studio Code, select **Extensions** from the left pane (or press **Ctrl+Shift+X**), then search the marketplace for the `Foundry Toolkit for VS Code` extension from Microsoft and select **Install** (if it isn't already installed).
+
+    > **Note**: The extension is currently listed as **Foundry Toolkit**, but some VS Code labels, commands, or older screenshots may still refer to **AI Toolkit**. In this lab, treat those names as referring to the same extension experience.
+
+1. Select the **Foundry Toolkit** icon in the sidebar, and sign in to your Azure account if you're prompted.
+   
+    > **Note**: If you're unable to sign in with the Foundry Toolkit extension, you my need to select the Azure extension. Sign in there, then navigate back to the Foundry Toolkit to access your resources.
+
+1. Under **Microsoft Foundry Resources**, choose **Set Default Project** and select the project you created earlier.
+1. Expand the project section. Under **Prompt Agents**, select your `product-expert-agent` agent to open the **Agent Builder** window.
+1. In the **Tools** section, add the **Azure AI Search** tool, and then select the connection and knowledge base you created earlier.
+
+    > **Note**: The agent may list more than one tool. The Foundry portal adds a **Web search** tool to new agents by default, so be sure to select the three dots on the **Azure AI Search** tool for your knowledge base rather than another tool.
+1. In the **Require approval before using tools** dropdown, select **Ask for approval for all tools**, and save your changes if you're prompted.
+
+Your agent will now request approval each time it uses Foundry IQ to search the knowledge base, which the client app you complete next will handle.
 
 ## Connect to your agent from an app
 
@@ -178,106 +206,106 @@ Now let's use Visual Studio Code to develop an app. The code files for your app 
     > **Tip**: Be careful to maintain the correct indentation level.
 
     ```python
-    # Connect to the project and agent
-    credential = DefaultAzureCredential(
-        exclude_environment_credential=True,
-        exclude_managed_identity_credential=True
-    )
-    project_client = AIProjectClient(
-        credential=credential,
-        endpoint=project_endpoint
-    )
+   # Connect to the project and agent
+   credential = DefaultAzureCredential(
+       exclude_environment_credential=True,
+       exclude_managed_identity_credential=True
+   )
+   project_client = AIProjectClient(
+       credential=credential,
+       endpoint=project_endpoint
+   )
 
-    # Get the OpenAI client
-    openai_client = project_client.get_openai_client()
+   # Get the OpenAI client
+   openai_client = project_client.get_openai_client()
 
-    # Get the agent
-    agent = project_client.agents.get(agent_name=agent_name)
-    print(f"Connected to agent: {agent.name} (id: {agent.id})\n")
+   # Get the agent
+   agent = project_client.agents.get(agent_name=agent_name)
+   print(f"Connected to agent: {agent.name} (id: {agent.id})\n")
 
-    # Create a new conversation
-    conversation = openai_client.conversations.create(items=[])
-    print(f"Created conversation (id: {conversation.id})\n")
+   # Create a new conversation
+   conversation = openai_client.conversations.create(items=[])
+   print(f"Created conversation (id: {conversation.id})\n")
     ```
 
 1. Find the second **TODO** comment inside the `send_message_to_agent()` function and add the following code to send messages and handle responses, including MCP approval requests:
 
     ```python
-    # Add user message to the conversation
-    openai_client.conversations.items.create(
-        conversation_id=conversation.id,
-        items=[{"type": "message", "role": "user", "content": user_message}],
-    )
-    
-    # Store in conversation history (client-side)
-    conversation_history.append({
-        "role": "user",
-        "content": user_message
-    })
-    
-    # Create a response using the agent
-    response = openai_client.responses.create(
-        conversation=conversation.id,
-        extra_body={"agent_reference": {"name": agent.name, "type": "agent_reference"}},
-        input=""
-    )
+   # Add user message to the conversation
+   openai_client.conversations.items.create(
+       conversation_id=conversation.id,
+       items=[{"type": "message", "role": "user", "content": user_message}],
+   )
 
-    # Check if the response output contains an MCP approval request
-    approval_request = None
-    if hasattr(response, 'output') and response.output:
-        for item in response.output:
-            if hasattr(item, 'type') and item.type == 'mcp_approval_request':
-                approval_request = item
-                break
-    
-    # Handle approval request if present
-    if approval_request:
-        print(f"[Approval required for: {approval_request.name}]\n")
-        print(f"Server: {approval_request.server_label}")
-        
-        # Parse and display the arguments (optional, for transparency)
-        import json
-        try:
-            args = json.loads(approval_request.arguments)
-            print(f"Arguments: {json.dumps(args, indent=2)}\n")
-        except:
-            print(f"Arguments: {approval_request.arguments}\n")
-        
-        # Prompt user for approval
-        approval_input = input("Approve this action? (yes/no): ").strip().lower()
-        
-        if approval_input in ['yes', 'y']:
-            print("Approving action...\n")
-            
-            # Create approval response item
-            approval_response = {
-                "type": "mcp_approval_response",
-                "approval_request_id": approval_request.id,
-                "approve": True
-            }
-        else:
-            print("Action denied.\n")
-            
-            # Create denial response item
-            approval_response = {
-                "type": "mcp_approval_response",
-                "approval_request_id": approval_request.id,
-                "approve": False
-            }
-        
-        # Add the approval response to the conversation
-        openai_client.conversations.items.create(
-            conversation_id=conversation.id,
-            items=[approval_response]
-        )
-        
-        # Get the actual response after approval/denial
-        response = openai_client.responses.create(
-            conversation=conversation.id,
-            extra_body={"agent_reference": {"name": agent.name, "type": "agent_reference"}},
-            input=""
-        )
-    
+   # Store in conversation history (client-side)
+   conversation_history.append({
+       "role": "user",
+       "content": user_message
+   })
+
+   # Create a response using the agent
+   response = openai_client.responses.create(
+       conversation=conversation.id,
+       extra_body={"agent_reference": {"name": agent.name, "type": "agent_reference"}},
+       input=""
+   )
+
+   # Check if the response output contains an MCP approval request
+   approval_request = None
+   if hasattr(response, 'output') and response.output:
+       for item in response.output:
+           if hasattr(item, 'type') and item.type == 'mcp_approval_request':
+               approval_request = item
+               break
+
+   # Handle approval request if present
+   if approval_request:
+       print(f"[Approval required for: {approval_request.name}]\n")
+       print(f"Server: {approval_request.server_label}")
+
+       # Parse and display the arguments (optional, for transparency)
+       import json
+       try:
+           args = json.loads(approval_request.arguments)
+           print(f"Arguments: {json.dumps(args, indent=2)}\n")
+       except:
+           print(f"Arguments: {approval_request.arguments}\n")
+
+       # Prompt user for approval
+       approval_input = input("Approve this action? (yes/no): ").strip().lower()
+
+       if approval_input in ['yes', 'y']:
+           print("Approving action...\n")
+
+           # Create approval response item
+           approval_response = {
+               "type": "mcp_approval_response",
+               "approval_request_id": approval_request.id,
+               "approve": True
+           }
+       else:
+           print("Action denied.\n")
+
+           # Create denial response item
+           approval_response = {
+               "type": "mcp_approval_response",
+               "approval_request_id": approval_request.id,
+               "approve": False
+           }
+
+       # Add the approval response to the conversation
+       openai_client.conversations.items.create(
+           conversation_id=conversation.id,
+           items=[approval_response]
+       )
+
+       # Get the actual response after approval/denial
+       response = openai_client.responses.create(
+           conversation=conversation.id,
+           extra_body={"agent_reference": {"name": agent.name, "type": "agent_reference"}},
+           input=""
+       )
+
     ```
 
 1. After you've added the code, save the file.
@@ -307,7 +335,7 @@ Now you'll run your application and test the agent's ability to retrieve informa
 1. In the terminal pane, enter the following command to sign into Azure.
 
     ```
-    az login
+   az login
     ```
 
     > **Note**: In most scenarios, just using *az login* will be sufficient. However, if you have subscriptions in multiple tenants, you may need to specify the tenant by using the *--tenant* parameter. See [Sign into Azure interactively using the Azure CLI](https://learn.microsoft.com/cli/azure/authenticate-azure-cli-interactively) for details.
@@ -325,7 +353,7 @@ Now you'll run your application and test the agent's ability to retrieve informa
     **Query 1 - Product Categories:**
 
     ```
-    What types of outdoor products does Contoso offer?
+   What types of outdoor products does Contoso offer?
     ```
 
     When prompted for approval, type **yes** to allow the agent to search the knowledge base. Observe how the agent retrieves information from multiple documents in the knowledge base.
@@ -333,7 +361,7 @@ Now you'll run your application and test the agent's ability to retrieve informa
     **Query 2 - Specific Product Details:**
 
     ```
-    Tell me about the weatherproof features of your tents.
+   Tell me about the weatherproof features of your tents.
     ```
 
     Approve the request and notice how the agent provides specific details from the tents catalog.
@@ -341,7 +369,7 @@ Now you'll run your application and test the agent's ability to retrieve informa
     **Query 3 - Product Comparisons:**
 
     ```
-    What's the difference between your daypacks and expedition backpacks?
+   What's the difference between your daypacks and expedition backpacks?
     ```
 
     Approve the request and see how the agent can synthesize information from the backpacks guide.
@@ -349,7 +377,7 @@ Now you'll run your application and test the agent's ability to retrieve informa
     **Query 4 - Accessories and Add-ons:**
 
     ```
-    What camping accessories would you recommend for a weekend hiking trip?
+   What camping accessories would you recommend for a weekend hiking trip?
     ```
 
     Approve the request and observe the agent's ability to provide recommendations based on the knowledge base.
@@ -357,7 +385,7 @@ Now you'll run your application and test the agent's ability to retrieve informa
     **Query 5 - Follow-up Question:**
 
     ```
-    How much do those items typically cost?
+   How much do those items typically cost?
     ```
 
     Notice how the agent maintains conversation context from your previous query.

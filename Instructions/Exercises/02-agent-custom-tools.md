@@ -5,6 +5,7 @@ lab:
     level: 300
     duration: 50
     islab: true
+    status: 'released'
 ---
 
 # Use a custom function in an AI agent
@@ -38,14 +39,14 @@ As a developer, you may spend some time working in the Foundry portal; but youâ€
 
 3. Search the extensions marketplace for the `Foundry Toolkit for VS Code` extension from Microsoft and select **Install**.
 
-    Installing the Foundry Toolkit Extension will add the AI Toolkit extension to VS Code.
-    
+    Installing the Foundry Toolkit Extension will add the Foundry Toolkit extension to VS Code.
+
     > **Note**: The extension is currently listed as **Foundry Toolkit**, but some VS Code labels, commands, or older screenshots may still refer to **AI Toolkit**. In this lab, treat those names as referring to the same extension experience.
 
-4. After installing the extension, select the AI Toolkit icon in the sidebar. 
+4. After installing the extension, select the Foundry Toolkit icon in the sidebar.
 
     You should be prompted to sign in to your Azure account if you haven't already.
-   
+
 5. Select **Create Project** under **Microsoft Foundry Resources**.
 
     If a default project is already active, the project name will appear under **My Resources**. You can create a new project by right-clicking on the active project and selecting **Switch Default Project in Azure Extension**.
@@ -60,23 +61,23 @@ At the core of any generative AI project, thereâ€™s at least one generative AI m
 
 1. When the "Project deployed successfully" popup appears, select the **Deploy a new model** button. This opens the Model Catalog.
 
-   > **Tip**: You can also access the Model Catalog by selecting the **+** icon next to **Models** in the Resources section, or by pressing **F1** and running the command **AI Toolkit: Show model catalog**.
+   > **Tip**: You can also access the Model Catalog by selecting the **+** icon next to **Models** in the Resources section, or by pressing **F1** and running the command **Foundry Toolkit: Show model catalog**.
 
-1. In the Model Catalog, locate the **gpt-4.1** model (you can use the search bar to find it quickly).
+1. In the Model Catalog, locate the **gpt-5** model (you can use the search bar to find it quickly).
 
-2. Select **Deploy** next to the gpt-4.1 model.
+1. Select **Deploy** next to the gpt-5 model.
 
-3. Configure the deployment settings:
-   - **Deployment name**: Enter a name like "gpt-4.1"
+1. Configure the deployment settings:
+   - **Deployment name**: Enter a name like "gpt-5"
    - **Deployment type**: Select **Global Standard** (or **Standard** if Global Standard is not available)
    - **Model version**: Leave as default
    - **Tokens per minute**: Leave as default
 
-4. Select **Deploy to Microsoft Foundry** in the bottom-left corner.
+1. Select **Deploy to Microsoft Foundry** in the bottom-left corner.
 
-5. Wait for the deployment to complete. Your deployed model will appear under the **Models** section in the Resources view.
+1. Wait for the deployment to complete. Your deployed model will appear under the **Models** section in the Resources view.
 
-6. Right-click the name of the project deployment and select **Copy Project Endpoint**. You'll need this URL to connect your agent to the Foundry project in the next steps.
+1. Right-click the name of the project deployment and select **Copy Project Endpoint**. You'll need this URL to connect your agent to the Foundry project in the next steps.
 
     ![Screenshot of copying the project endpoint in the Foundry Toolkit VS Code extension.](../Media/vs-code-endpoint.png)
 
@@ -91,7 +92,7 @@ For this exercise, you'll use starter code that will help you connect to your Fo
 1. Enter the repository URL:
 
     ```
-    https://github.com/MicrosoftLearning/mslearn-ai-agents.git
+   https://github.com/MicrosoftLearning/mslearn-ai-agents.git
     ```
 
 1. Choose a location on your local machine to clone the repository.
@@ -100,16 +101,16 @@ For this exercise, you'll use starter code that will help you connect to your Fo
 
 1. Once the repository opens, select **File > Open Folder** and navigate to `mslearn-ai-agents/Labfiles/02-agent-custom-tools`, then choose **Select Folder**.
 
-1. In the Explorer pane, expand the **Python** folder to view the code files for this exercise. 
+1. In the Explorer pane, expand the **Python** folder to view the code files for this exercise.
 
 1. Right-click on the **requirements.txt** file and select **Open in Integrated Terminal**.
 
 1. In the terminal, enter the following command to install the required Python packages in a virtual environment:
 
     ```
-    python -m venv labenv
-    .\labenv\Scripts\Activate.ps1
-    pip install -r requirements.txt
+   python -m venv labenv
+   .\labenv\Scripts\Activate.ps1
+   pip install -r requirements.txt
     ```
 
 1. Open the **.env** file, replace the **your_project_endpoint** placeholder with the endpoint for your project (copied from the project deployment resource in the Foundry Toolkit VS Code extension) and ensure that the MODEL_DEPLOYMENT_NAME variable is set to your model deployment name. Use **Ctrl+S** to save the file after making these changes.
@@ -164,12 +165,12 @@ Now you're ready to create an AI agent that uses MCP server tools to access exte
 1. Find the comment **Connect to the project client** and add the following code:
 
     ```python
-    # Connect to the project client
-    with (
-        DefaultAzureCredential() as credential,
-        AIProjectClient(endpoint=project_endpoint, credential=credential) as project_client,
-        project_client.get_openai_client() as openai_client,
-    ):
+   # Connect to the project client
+   with (
+       DefaultAzureCredential() as credential,
+       AIProjectClient(endpoint=project_endpoint, credential=credential) as project_client,
+       project_client.get_openai_client() as openai_client,
+   ):
     ```
 
 ## Define the function tools
@@ -309,7 +310,7 @@ Now that you've created the agent with the function tools, you can send messages
     ```python
    # Create a list to hold function call outputs that will be sent back as input to the agent
    input_list: ResponseInputParam = []
-   ```
+    ```
 
 1. Find the comment **Send a prompt to the agent** and add the following code:
 
@@ -327,7 +328,7 @@ Now that you've created the agent with the function tools, you can send messages
    # Retrieve the agent's response, which may include function calls
    response = openai_client.responses.create(
        conversation=conversation.id,
-       extra_body={"agent": {"name": agent.name, "type": "agent_reference"}},
+       extra_body={"agent_reference": {"name": agent.name, "type": "agent_reference"}},
        input=input_list,
    )
 
@@ -355,7 +356,7 @@ Now that you've created the agent with the function tools, you can send messages
                result = calculate_observation_cost(**json.loads(item.arguments))
            elif item.name == "generate_observation_report":
                result = generate_observation_report(**json.loads(item.arguments))
-                
+
            # Append the output text
            input_list.append(
                FunctionCallOutput(
@@ -376,7 +377,7 @@ Now that you've created the agent with the function tools, you can send messages
        response = openai_client.responses.create(
            input=input_list,
            previous_response_id=response.id,
-           extra_body={"agent": {"name": agent.name, "type": "agent_reference"}},
+           extra_body={"agent_reference": {"name": agent.name, "type": "agent_reference"}},
        )
    # Display the agent's response
    print(f"AGENT: {response.output_text}")
@@ -387,9 +388,9 @@ Now that you've created the agent with the function tools, you can send messages
 1. Find the comment **Delete the agent when done** and add the following code:
 
     ```python
-    # Delete the agent when done
-    project_client.agents.delete_version(agent_name=agent.name, agent_version=agent.version)
-    print("Deleted agent.")
+   # Delete the agent when done
+   project_client.agents.delete_version(agent_name=agent.name, agent_version=agent.version)
+   print("Deleted agent.")
     ```
 
 1. Review the complete code you've added to the file. It should now include sections that:
@@ -407,8 +408,9 @@ Now that you've created the agent with the function tools, you can send messages
 ## Run the agent application
 
 1. In the integrated terminal, enter the following command to run the application:
+
     ```
-    az login
+   az login
     ```
 
     ```
@@ -428,31 +430,31 @@ Now that you've created the agent with the function tools, you can send messages
     You should see some output similar to the following:
 
     ```output
-    AGENT: The next astronomical event you can observe from South America is the Jupiter-Venus Conjunction, taking place on May 1st.
-    The cost for 5 hours of premium telescope time at normal priority for this observation will be $1,875. 
+   AGENT: The next astronomical event you can observe from South America is the Jupiter-Venus Conjunction, taking place on May 1st.
+   The cost for 5 hours of premium telescope time at normal priority for this observation will be $1,875. 
     ```
 
 1. Enter a follow-up prompt to generate an observation report, such as:
 
     ```
-    Generate that information in a report for Bellows College.
+   Generate that information in a report for Bellows College.
     ```
 
     You should see a response similar to the following:
 
     ```output
-    AGENT: Here is your report for Bellows College:
+   AGENT: Here is your report for Bellows College:
 
-    - Next visible astronomical event: Jupiter-Venus Conjunction
-    - Date: May 1st
-    - Visible from: South America
-    - Observation details:
-        - Telescope tier: Premium
-        - Duration: 5 hours
-        - Priority: Normal
-    - Observation cost: $1,875
+   - Next visible astronomical event: Jupiter-Venus Conjunction
+   - Date: May 1st
+   - Visible from: South America
+   - Observation details:
+       - Telescope tier: Premium
+       - Duration: 5 hours
+       - Priority: Normal
+   - Observation cost: $1,875
 
-    A formal report has been generated for Bellows College.
+   A formal report has been generated for Bellows College.
     ```
 
     In the file explorer, you can see that a new file named `report-<event-type>.txt` has been created, which contains the generated report. You can open this file to view the contents of the report.

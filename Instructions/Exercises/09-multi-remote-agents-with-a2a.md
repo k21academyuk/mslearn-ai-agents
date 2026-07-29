@@ -5,6 +5,7 @@ lab:
     level: 300
     duration: 30
     islab: true
+    status: 'released'
 ---
 
 # Connect to remote agents with A2A protocol
@@ -40,7 +41,7 @@ As a developer, you may spend some time working in the Foundry portal; but you�
 
     > **Note**: The extension is currently listed as **Foundry Toolkit**, but some VS Code labels, commands, or older screenshots may still refer to **AI Toolkit**. In this lab, treat those names as referring to the same extension experience.
 
-4. After installing the extension, select its icon in the sidebar to open the Foundry Toolkit view. 
+4. After installing the extension, select its icon in the sidebar to open the Foundry Toolkit view.
 
     You should be prompted to sign in to your Azure account if you haven't already.
 
@@ -58,26 +59,26 @@ At the core of any generative AI project, there’s at least one generative AI m
 
 1. When the "Project deployed successfully" popup appears, select the **Deploy a new model** button. This opens the Model Catalog.
 
-   > **Tip**: You can also access the Model Catalog by selecting the **+** icon next to **Models** in the Resources section, or by pressing **F1** and running the command **AI Toolkit: Show model catalog**.
+   > **Tip**: You can also access the Model Catalog by selecting the **+** icon next to **Models** in the Resources section, or by pressing **F1** and running the command **Foundry Toolkit: Show model catalog**.
 
-1. In the Model Catalog, locate the **gpt-4.1** model (you can use the search bar to find it quickly).
+1. In the Model Catalog, locate the **gpt-5** model (you can use the search bar to find it quickly).
 
-2. Select **Deploy** next to the gpt-4.1 model.
+1. Select **Deploy** next to the gpt-5 model.
 
-3. Configure the deployment settings:
-   - **Deployment name**: Enter a name like "gpt-4.1"
+1. Configure the deployment settings:
+   - **Deployment name**: Enter a name like "gpt-5"
    - **Deployment type**: Select **Global Standard** (or **Standard** if Global Standard is not available)
    - **Model version**: Leave as default
    - **Tokens per minute**: Leave as default
 
-4. Select **Deploy to Microsoft Foundry** in the bottom-left corner.
+1. Select **Deploy to Microsoft Foundry** in the bottom-left corner.
 
-5. Wait for the deployment to complete. Your deployed model will appear under the **Models** section in the Resources view.
+1. Wait for the deployment to complete. Your deployed model will appear under the **Models** section in the Resources view.
 
-6. Right-click the name of the project deployment and select **Copy Project Endpoint**. You'll need this URL to connect your agent to the Foundry project in the next steps.
+1. Right-click the name of the project deployment and select **Copy Project Endpoint**. You'll need this URL to connect your agent to the Foundry project in the next steps.
 
     ![Screenshot of copying the project endpoint in the Foundry Toolkit VS Code extension.](../Media/vs-code-endpoint.png)
-    
+
 ## Clone the starter code repository
 
 For this exercise, you'll use starter code that will help you connect to your Foundry project and create an agent that can process expenses data. You'll clone this code from a GitHub repository.
@@ -89,36 +90,36 @@ For this exercise, you'll use starter code that will help you connect to your Fo
 1. Enter the repository URL:
 
     ```
-    https://github.com/MicrosoftLearning/mslearn-ai-agents.git
+   https://github.com/MicrosoftLearning/mslearn-ai-agents.git
     ```
 
 1. Choose a location on your local machine to clone the repository.
 
 1. When prompted, select **Open** to open the cloned repository in VS Code.
 
-1. Once the repository opens, select **File > Open Folder** and navigate to `mslearn-ai-agents/Labfiles/06-build-remote-agents-with-a2a`, then choose **Select Folder**.
+1. Once the repository opens, select **File > Open Folder** and navigate to `mslearn-ai-agents/Labfiles/09-build-remote-agents-with-a2a`, then choose **Select Folder**.
 
-1. In the Explorer pane, expand the **Python** folder to view the code files for this exercise. 
+1. In the Explorer pane, expand the **Python** folder to view the code files for this exercise.
 
-1. In the Explorer view, navigate to the **Labfiles/06-build-remote-agents-with-a2a/Python** folder to find the starter code for this exercise.
+1. In the Explorer view, navigate to the **Labfiles/09-build-remote-agents-with-a2a/Python** folder to find the starter code for this exercise.
 
     The provided files include:
 
     ```output
-    python
-    ├── outline_agent/
-    │   ├── agent.py
-    │   ├── agent_executor.py
-    │   └── server.py
-    ├── routing_agent/
-    │   ├── agent.py
-    │   └── server.py
-    ├── title_agent/
-    │   ├── agent.py
-    |   ├── agent_executor.py
-    │   └── server.py
-    ├── client.py
-    └── run_all.py
+   python
+   ├── outline_agent/
+   │   ├── agent.py
+   │   ├── agent_executor.py
+   │   └── server.py
+   ├── routing_agent/
+   │   ├── agent.py
+   │   └── server.py
+   ├── title_agent/
+   │   ├── agent.py
+   |   ├── agent_executor.py
+   │   └── server.py
+   ├── client.py
+   └── run_all.py
     ```
 
     Each agent folder contains the Azure AI agent code and a server to host the agent. The **routing agent** is responsible for discovering and communicating with the **title** and **outline** agents. The **client** allows users to submit prompts to the routing agent. `run_all.py` launches all the servers and runs the client.
@@ -128,9 +129,9 @@ For this exercise, you'll use starter code that will help you connect to your Fo
 1. In the terminal, enter the following command to install the required Python packages in a virtual environment:
 
     ```
-    python -m venv labenv
-    .\labenv\Scripts\Activate.ps1
-    pip install -r requirements.txt
+   python -m venv labenv
+   .\labenv\Scripts\Activate.ps1
+   pip install -r requirements.txt
     ```
 
 1. Open the **.env** file, replace the **your_project_endpoint** placeholder with the endpoint for your project (copied from the project deployment resource in the Foundry Toolkit extension) and ensure that the MODEL_DEPLOYMENT_NAME variable is set to your model deployment name. Use **Ctrl+S** to save the file after making these changes.
@@ -379,12 +380,13 @@ In this task, you use the A2A protocol to enable the routing agent to send messa
 ## Test the application
 
 1. In the integrated terminal, enter the following commands to run the application:
+
     ```
-    az login
+   az login
     ```
 
     ```
-    python run_all.py
+   python run_all.py
     ```
 
     The application runs using the credentials for your authenticated Azure session to connect to your project and create and run the agent. You should see some output from each server as it starts.

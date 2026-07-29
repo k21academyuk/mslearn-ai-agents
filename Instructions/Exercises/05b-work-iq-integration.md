@@ -5,6 +5,7 @@ lab:
     level: 300
     duration: 40
     islab: true
+    status: 'released'
 ---
 
 # Work IQ - Workplace intelligence for AI agents
@@ -35,21 +36,21 @@ Before starting this lab, ensure you have:
 
 2. Install Work IQ globally via npm:
 
-   ```bash
+    ```bash
    npm install -g @microsoft/workiq
-   ```
+    ```
 
 3. Accept the End User License Agreement:
 
-   ```bash
+    ```bash
    workiq accept-eula
-   ```
+    ```
 
 4. Test your Work IQ installation:
 
-   ```bash
+    ```bash
    workiq ask -q "What meetings do I have today?"
-   ```
+    ```
 
 5. **If the test succeeds** - You'll see meeting information from your M365 calendar. Continue to the next task!
 
@@ -70,12 +71,12 @@ Before starting this lab, ensure you have:
 Now let's use Visual Studio Code to develop an app. The code files for your app have been provided in a GitHub repo.
 
 1. Start Visual Studio Code, and open a terminal window.
-   
+
 2. Enter the command to clone the repo to a local folder (it doesn't matter which folder):
 
-   ```bash
+    ```bash
    git clone https://github.com/MicrosoftLearning/mslearn-ai-agents.git
-   ```
+    ```
 
 3. When the repository has been cloned, open the folder in Visual Studio Code.
 
@@ -91,40 +92,40 @@ Now let's use Visual Studio Code to develop an app. The code files for your app 
 
 6. In the terminal, enter the command to create a Python virtual environment:
 
-   ```bash
+    ```bash
    python -m venv venv
-   ```
+    ```
 
 7. Activate the virtual environment:
 
    **Windows:**
 
-   ```bash
+    ```bash
    venv\Scripts\activate
-   ```
+    ```
 
    **macOS/Linux:**
 
-   ```bash
+    ```bash
    source venv/bin/activate
-   ```
+    ```
 
 8. Install required Python packages:
 
-   ```bash
+    ```bash
    pip install -r requirements.txt
-   ```
+    ```
 
 9. Configure your `.env` file:
 
    In the lab folder, open the `.env` file and update it with your Foundry project endpoint:
 
-   ```env
+    ```env
    PROJECT_ENDPOINT=https://your-project.services.ai.azure.com/api/projects/your-id
-   MODEL_DEPLOYMENT_NAME=gpt-4.1
-   ```
+   MODEL_DEPLOYMENT_NAME=gpt-5
+    ```
 
-   > **Tip:** To get your endpoint: In VS Code, open the **AI Toolkit** extension, right-click on your active project, and select **Copy Endpoint**. The AI Toolkit is included in the Foundry Toolkit for VS Code extension.
+   > **Tip:** To get your endpoint: In VS Code, open the **Foundry Toolkit** extension, right-click on your active project, and select **Copy Endpoint**. The Foundry Toolkit is included in the Foundry Toolkit for VS Code extension.
 
 ### Verify setup
 
@@ -146,9 +147,9 @@ In this exercise, you'll run a unified interactive application that demonstrates
 
 2. Run the lab application:
 
-   ```bash
+    ```bash
    python workiq_lab.py
-   ```
+    ```
 
 3. The application will:
    - Validate Work IQ setup
@@ -269,27 +270,27 @@ This scenario lets you explore your workplace data with your own questions.
 
    **Email searches:**
 
-   ```
+    ```
    Find emails about the budget from my manager
-   ```
+    ```
 
    **Meeting summaries:**
 
-   ```
+    ```
    What was decided in yesterday's standup?
-   ```
+    ```
 
    **Team activity:**
 
-   ```
+    ```
    What did the engineering team discuss this week?
-   ```
+    ```
 
    **Document discovery:**
 
-   ```
+    ```
    Show me shared documents about security policies
-   ```
+    ```
 
 3. Experiment with:
    - Different time ranges
