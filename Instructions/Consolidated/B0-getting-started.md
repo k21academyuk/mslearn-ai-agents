@@ -3,6 +3,11 @@ title: 'Getting started: set up your environment'
 lab:
     title: 'Getting started: set up your environment'
     description: 'Shared setup for the Integrate agents with enterprise knowledge and Microsoft 365 lab: create a Microsoft Foundry project, get the starter code, and configure your environment. Complete this once before any task.'
+    type: 'task'
+    parent: 'B'
+    order: 0
+    section: 'setup'
+    access: 'open'
     level: 300
     concepts: 'environment setup, Microsoft Foundry project'
     status: 'draft'
@@ -15,9 +20,9 @@ lab needs. **Every task begins here** — complete this page first. Each task is
 then do it on its own; if you're working through the whole lab in one sitting, you only need to do
 this setup once.
 
-**Your scenario:** you work at **Tailwind Traders**, an outdoor-gear retailer that also runs
-guided trips. Across the lab you'll build the staff knowledge assistant, ground it on enterprise
-documents, and deliver it through Microsoft 365.
+**Your scenario:** you work at **Caldova**, a pharmaceutical manufacturer preparing an
+accelerated product launch. Across the lab you'll build the staff knowledge assistant,
+ground it on enterprise documents, and deliver it through Microsoft 365.
 
 > **Note**: Some of the technologies used in this lab are in preview or in active
 > development. You may experience some unexpected behavior, warnings, or errors.
@@ -28,11 +33,11 @@ Before starting, ensure you have:
 
 - An [Azure subscription](https://azure.microsoft.com/free/) with sufficient permissions and quota to provision Azure AI resources
 - [Visual Studio Code](https://code.visualstudio.com/) installed on your local machine
-- [Python 3.13](https://www.python.org/downloads/) or later installed
+- [Python 3.13](https://www.python.org/downloads/) installed
 - [Git](https://git-scm.com/downloads) installed on your local machine
 - Basic familiarity with Python
 
-> \* Python 3.14 is available, but some dependencies are not yet compiled for that release. The lab has been successfully tested with Python 3.13.12.
+> \* Python 3.14 isn't supported yet: some dependencies have no 3.14 build. This lab was tested with Python 3.13.12.
 
 Some optional tasks have extra prerequisites (a Microsoft 365 account for Teams, a Microsoft 365
 Copilot license and Node.js for Work IQ). Each optional task page lists what it needs.
@@ -53,7 +58,7 @@ Microsoft Foundry uses projects to organize models, resources, data, and other a
 
 1. In the top banner, select **Start building**.
 
-1. When prompted, create a **new** project and enter a valid name (for example, `tailwind-knowledge-project`).
+1. When prompted, create a **new** project and enter a valid name (for example, `caldova-knowledge-project`).
 
 1. Expand **Advanced options** and specify:
     - **Microsoft Foundry resource**: *A valid name for your Foundry resource*
@@ -65,7 +70,7 @@ Microsoft Foundry uses projects to organize models, resources, data, and other a
 
 1. Select **Create** and wait for your project to be created. When prompted, continue through the welcome dialog and select **Create agent**.
 
-1. Set the **Agent name** to `tailwind-knowledge-agent` and create the agent. The playground opens with a deployed model already selected for you.
+1. Set the **Agent name** to `caldova-knowledge-agent` and create the agent. The playground opens with a deployed model already selected for you.
 
 Keep this browser tab open — you'll use it in Task 1.
 

@@ -3,9 +3,15 @@ title: 'Task 3 – Call your agent from a client app'
 lab:
     title: 'Task 3 – Call your agent from a client app'
     description: 'Drive your grounded portal agent from a small web chat app using the Foundry SDK and Responses API, with inline charts.'
+    type: 'task'
+    parent: 'A'
+    order: 3
+    section: 'optional'
+    difficulty: 3
+    duration: 20
+    access: 'open'
     level: 300
     concepts: 'Foundry SDK, Responses API, code interpreter'
-    islab: true
     status: 'draft'
 ---
 
@@ -24,16 +30,16 @@ from the `Python` folder you opened in VS Code, run:
 python ../setup/bootstrap_agent.py
 ```
 
-That creates and grounds `tailwind-agent` — including the **Code Interpreter** tool with the
-sales data already attached — and writes `AGENT_NAME` into your `.env`. Then verify you're ready:
+That creates and grounds `caldova-agent` — including the **Code Interpreter** tool with the
+output data already attached — and writes `AGENT_NAME` into your `.env`. Then verify you're ready:
 
 ```
 python ../setup/check_env.py --task 3
 ```
 
 > **Already built the agent in [Task 1](A1-create-and-ground-an-agent.md)?** Use it instead
-> of the script: open your `tailwind-agent` in the portal, add the **Code interpreter** tool
-> with the sales data (step 1 below), and set `AGENT_NAME=tailwind-agent` in `.env`.
+> of the script: open your `caldova-agent` in the portal, add the **Code interpreter** tool
+> with the output data (step 1 below), and set `AGENT_NAME=caldova-agent` in `.env`.
 
 ---
 
@@ -41,10 +47,46 @@ python ../setup/check_env.py --task 3
 the playground — including charts the agent produces (from code interpreter), which render
 **inline** in the chat window.
 
-**Concept reinforced**: consuming an agent programmatically with the Foundry SDK — loading
-an existing agent by name and driving it with the Responses API. A provided UI shell
-(`tailwind_ui.py`) turns your agent into a browser chat app, so you focus on the agent code,
-not the interface.
+You load the existing agent by name and send messages to it from a provided web interface.
+
+<style>
+/* "Ask Anton" just-in-time concept blocks */
+details.concept { margin:.6rem 0 1rem; }
+details.concept > summary { display:inline-block; cursor:pointer; list-style:none;
+    font-size:.85em; font-weight:600; color:#6b4ba1; background:#6b4ba112;
+    border:1px solid #6b4ba133; border-radius:999px; padding:.2em .7em; }
+details.concept > summary::-webkit-details-marker { display:none; }
+details.concept > summary::before { content:"Ask Anton: "; font-weight:700;
+    padding-left:1.5em;
+    background:url("../Media/anton-avatar.png") left center / 1.25em 1.25em no-repeat; }
+details.concept > summary:hover { background:#6b4ba1; color:#fff; border-color:#6b4ba1; }
+details.concept[open] > summary { border-bottom-left-radius:0; border-bottom-right-radius:0; }
+details.concept .concept-body { border:1px solid #6b4ba133; border-top:none;
+    border-radius:0 8px 8px 8px; padding:.6rem .9rem; background:#6b4ba108; font-size:.95em; }
+</style>
+
+<details markdown="1" class="concept">
+<summary>How does an app call a Foundry agent?</summary>
+<div class="concept-body" markdown="1">
+
+The **Foundry SDK** gives your Python code access to projects and agents. The **Responses
+API** sends a user's input and returns the agent's response, including tool output. An
+`agent_reference` tells the API which saved agent should handle the request, while a
+conversation keeps messages together across turns.
+
+</div>
+</details>
+
+<details markdown="1" class="concept">
+<summary>What does Code Interpreter do?</summary>
+<div class="concept-body" markdown="1">
+
+Code Interpreter gives the agent a managed environment where it can run code against
+attached files. Here, the agent reads `weekly_output.csv`, calculates results, and creates
+a chart. The client detects the generated image and displays it in the chat.
+
+</div>
+</details>
 
 **Set up:**
 
@@ -54,18 +96,18 @@ and `AGENT_NAME` are already configured — activate your virtual environment
 
 **If you built the agent yourself in Task 1**, finish wiring it up:
 
-1. In the portal, open your `tailwind-agent`, add a **Code interpreter** tool, and upload
+1. In the portal, open your `caldova-agent`, add a **Code interpreter** tool, and upload
     a data file so there's something to analyze. Download and attach:
 
     ```
-    https://raw.githubusercontent.com/MicrosoftLearning/mslearn-ai-agents/main/Labfiles/A-build-and-extend-ai-agents/Python/weekly_sales.csv
+    https://raw.githubusercontent.com/MicrosoftLearning/mslearn-ai-agents/main/Labfiles/A-build-and-extend-ai-agents/Python/weekly_output.csv
     ```
 
     Save the agent.
 
 1. In the `Labfiles/A-build-and-extend-ai-agents/Python` folder, activate the virtual
     environment (`.\labenv\Scripts\Activate.ps1`). Then open **.env** and add
-    `AGENT_NAME=tailwind-agent` alongside the `PROJECT_ENDPOINT` you already set. Save the file.
+    `AGENT_NAME=caldova-agent` alongside the `PROJECT_ENDPOINT` you already set. Save the file.
 
 > **Try it first**: The `agent_with_functions.py` file already contains a complete client
 > that launches a web chat window. Before running it, predict: which SDK call loads your
@@ -101,7 +143,7 @@ The provided `agent_with_functions.py` already implements the client and hands i
 4. **Launch the app**: the file ends by starting the browser chat window:
 
     ```python
-    run_chat_app(respond, title="Tailwind Traders Assistant")
+    run_chat_app(respond, title="Caldova Supply Chain Assistant")
     ```
 
 Sign in and run it:
@@ -115,7 +157,7 @@ Your browser opens a chat window at `http://localhost:7860`. Ask for something t
 code interpreter:
 
 ```
-Analyze the weekly sales data and create a chart of revenue over time.
+Analyze the weekly production output data and create a chart of output over time.
 ```
 
 The agent's analysis appears in the chat and the **chart is shown inline**. Close the

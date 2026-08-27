@@ -2,26 +2,18 @@
 title: 'Integrate agents with enterprise knowledge and Microsoft 365'
 lab:
     title: 'Integrate agents with enterprise knowledge and Microsoft 365'
-    description: 'Build the Tailwind Traders staff knowledge assistant: ground it on enterprise documents with Foundry IQ, then deliver it through Microsoft Teams, Microsoft 365 Copilot, and Work IQ. A modular lab you can complete end to end or one task at a time.'
+    description: 'Build the Caldova staff knowledge assistant: ground it on enterprise documents with Foundry IQ, then deliver it through Microsoft Teams, Microsoft 365 Copilot, and Work IQ. A modular lab you can complete end to end or one task at a time.'
+    type: 'lab'
+    id: 'B'
+    order: 2
+    difficulty: 3
+    duration: 35
+    access: 'open'
     level: 300
     concepts: 'enterprise knowledge grounding, Foundry IQ, Microsoft 365, Model Context Protocol (MCP)'
-    duration: 35
     islab: true
     status: 'draft'
 ---
-
-<!--
-PILOT NOTE (remove before publishing):
-This is a pilot of the new lab template (Core + Optional tasks) applied to
-"Lab B" = a consolidation of the current exercises 04, 05a, and 05b.
-Starter code lives in a single folder — Labfiles/B-integrate-agents-with-enterprise-knowledge-and-m365/Python/ —
-shared by every code task (one virtual environment, one .env). The completed reference code is
-in Labfiles/B-integrate-agents-with-enterprise-knowledge-and-m365/Solution/Python/.
-
-This landing page is the lab overview. Setup lives in B0-getting-started.md and each task is
-its own page (B1–B4) so it can be completed on its own. Optional per-task fast-forward and
-provisioning scripts live in Labfiles/B-integrate-agents-with-enterprise-knowledge-and-m365/setup/ and infra/.
--->
 
 # Integrate agents with enterprise knowledge and Microsoft 365
 
@@ -74,10 +66,11 @@ retrieval*, and it can require an **approval** step before each lookup so your a
 </div>
 </details>
 
-**Your scenario:** you work at **Tailwind Traders**, an outdoor-gear retailer that also runs
-guided trips. Store staff constantly field questions about products, store operations, returns,
-rentals, and suppliers — and the answers all live in internal documents. In this lab you'll build
-the **Tailwind Traders staff knowledge assistant**: first grounding it on those enterprise docs
+**Your scenario:** you work at **Caldova**, a pharmaceutical manufacturer preparing an
+accelerated product launch. Planning and materials teams constantly field questions about
+site capacity, contract manufacturers, tech transfer, and suppliers — and the answers all
+live in internal documents. In this lab you'll build
+the **Caldova staff knowledge assistant**: first grounding it on those enterprise docs
 with Foundry IQ, then publishing it to Microsoft Teams and Microsoft 365 Copilot so staff can use
 it where they already work, and finally exploring **Work IQ** to bring live Microsoft 365 signals
 into an agent.
@@ -118,16 +111,23 @@ folder, one virtual environment, and one `.env`, so if you'd rather work straigh
 
 ## Lab at a glance
 
-Complete the **Core** task first (about **35 minutes**) — it ends with a working, grounded
-enterprise-knowledge agent you can call from code. Then expand any **Optional** tasks that
-interest you. The full lab, including all optional tasks, takes about **1 hour 50 minutes**.
+Complete the **Core** task first — it ends with a working, grounded enterprise-knowledge agent
+you can call from code. Then expand any **Optional** tasks that interest you.
 
+<!-- BEGIN GENERATED: task-table - do not edit by hand; run: python tools/generate_lab_blocks.py -->
 | Section | Task | Level | Time |
 | --- | --- | --- | --- |
 | **Core** | [Task 1 – Create a Foundry IQ knowledge agent and connect from code](B1-create-a-foundry-iq-knowledge-agent.md) | ▰▰▰▱▱ L300 | ~35 min |
-| *Optional* | [Task 2 – Publish your agent to Microsoft Teams](B2-publish-to-microsoft-teams.md) | ▰▰▱▱▱ L200 | ~20 min |
-| *Optional* | [Task 3 – Publish your agent to Microsoft 365 Copilot](B3-publish-to-microsoft-365-copilot.md) | ▰▰▱▱▱ L200 | ~15 min |
-| *Optional* | [Task 4 – Work IQ: bring Microsoft 365 signals into an agent](B4-work-iq-workplace-intelligence.md) | ▰▰▰▰▱ L400 | ~40 min |
+| *Optional* | [Task 2 – Publish your agent to Microsoft Teams](B2-publish-to-microsoft-teams.md) 🔒 | ▰▰▱▱▱ L200 | ~20 min |
+| *Optional* | [Task 3 – Publish your agent to Microsoft 365 Copilot](B3-publish-to-microsoft-365-copilot.md) 🔒 | ▰▰▱▱▱ L200 | ~15 min |
+| *Optional* | [Task 4 – Work IQ: bring Microsoft 365 signals into an agent](B4-work-iq-workplace-intelligence.md) 🔒 | ▰▰▰▰▱ L400 | ~40 min |
+
+**Core tasks:** about **35 minutes**. **Full lab**, including every optional task: about **1 hour 50 minutes**.
+
+> 🔒 Tasks marked with a lock need access your account may not have. Each one opens
+> with a quick check and tells you what to do if you don't have it — nothing else in
+> this lab depends on them.
+<!-- END GENERATED: task-table -->
 
 **Choosing your path** — pick the tasks that fit the time you have:
 
@@ -136,7 +136,7 @@ interest you. The full lab, including all optional tasks, takes about **1 hour 5
 - **Everything (~1h 50m):** add **Task 4** (Work IQ) for live workplace intelligence.
 
 > **One assistant, delivered everywhere**: Tasks 1–3 all revolve around the **same** grounded
-> agent (`tailwind-knowledge-agent`). You build and ground it once (Task 1), then Tasks 2 and 3
+> agent (`caldova-knowledge-agent`). You build and ground it once (Task 1), then Tasks 2 and 3
 > simply *publish* that same agent to Teams and Copilot — no new code. Task 4 explores a
 > different Microsoft 365 capability (Work IQ) with its own agent.
 

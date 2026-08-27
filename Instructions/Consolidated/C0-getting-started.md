@@ -3,6 +3,11 @@ title: 'Getting started: set up your environment'
 lab:
     title: 'Getting started: set up your environment'
     description: 'Shared setup for the Build multi-agent solutions with the Agent Framework lab: create a Microsoft Foundry project, get the starter code, and configure your environment. Complete this once before any task.'
+    type: 'task'
+    parent: 'C'
+    order: 0
+    section: 'setup'
+    access: 'open'
     level: 300
     concepts: 'environment setup, Microsoft Foundry project'
     status: 'draft'
@@ -15,9 +20,9 @@ needs. **Every task begins here** — complete this page first. Each task is wri
 do it on its own; if you're working through the whole lab in one sitting, you only need to do this
 setup once.
 
-**Your scenario:** you work at **Tailwind Traders**, an outdoor-gear retailer that also runs
-guided trips. Across the lab you'll build the automation behind Tailwind Traders operations,
-starting with one agent and growing to a coordinated team of them.
+**Your scenario:** you work at **Caldova**, a pharmaceutical manufacturer preparing an
+accelerated product launch. Across the lab you'll build the automation behind Caldova
+operations, starting with one agent and growing to a coordinated team of them.
 
 > **Note**: Some of the technologies used in this lab are in preview or in active
 > development. You may experience some unexpected behavior, warnings, or errors.
@@ -28,11 +33,11 @@ Before starting, ensure you have:
 
 - An [Azure subscription](https://azure.microsoft.com/free/) with sufficient permissions and quota to provision Azure AI resources
 - [Visual Studio Code](https://code.visualstudio.com/) installed on your local machine
-- [Python 3.13](https://www.python.org/downloads/) or later installed
+- [Python 3.13](https://www.python.org/downloads/) installed
 - [Git](https://git-scm.com/downloads) installed on your local machine
 - Basic familiarity with Python
 
-> \* Python 3.14 is available, but some dependencies are not yet compiled for that release. The lab has been successfully tested with Python 3.13.12.
+> \* Python 3.14 isn't supported yet: some dependencies have no 3.14 build. This lab was tested with Python 3.13.12.
 
 ## Create a Microsoft Foundry project
 
